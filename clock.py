@@ -18,8 +18,8 @@ from timeUtils import timeInWords
 epd = epd4in2.EPD()
 WIDTH, HEIGHT = epd.width, epd.height
 TIME_X, TIME_Y = 30, 70
-#font35 = ImageFont.truetype('Habbo.ttf', 60)
-displayFont = ImageFont.truetype('NovaMono.ttf', 50)
+#font35 = ImageFont.truetype('fonts/Habbo.ttf', 60)
+displayFont = ImageFont.truetype('fonts/NovaMono.ttf', 50)
 
 def handler(signal_received, frame):
     # Handle any cleanup here
