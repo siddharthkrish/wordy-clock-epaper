@@ -23,8 +23,8 @@ displayFontSmall = ImageFont.truetype('fonts/NovaMono.ttf', 22) # 30 characters
 displayFontMedium = ImageFont.truetype('fonts/NovaMono.ttf', 26) # 20 characters
 displayFontBig = ImageFont.truetype('fonts/NovaMono.ttf', 32) # XX characters
 
-def getTextPosition(draw, dFont text):
-    w, h = draw.textsize(text, font = dFont)
+def getTextPosition(draw, font, text):
+    w, h = draw.textsize(text, font = font)
     h += int(h*0.21)
     logging.info("w: %s, h: %s, x: %s, y: %s",w,h,(WIDTH-w)/2, (HEIGHT-h)/2)
     return (WIDTH-w)/2, (HEIGHT-h)/2
@@ -44,7 +44,7 @@ def trackChanged(track_info):
         elif len(track_info['name']) < 22 & len(track_info['name']) > 10
             dFont = displayFontMedium
 
-        x, y = getTextPosition(draw, track_info_text, dFont)
+        x, y = getTextPosition(draw, dFont, track_info_text)
         draw.multiline_text((x, y), track_info_text, font = dFont)
         image_buffer = epd.getbuffer(Himage)
         epd.display(image_buffer)
