@@ -39,9 +39,9 @@ def trackChanged(track_info):
 
         track_info_text = "now playing...\n{}\n{}".format(track_info['name'], track_info['artist'])
         dFont = displayFontBig
-        if len(track_info['name']) > 22
+        if len(track_info['name']) > 22:
             dFont = displayFontSmall
-        elif len(track_info['name']) < 22 & len(track_info['name']) > 10
+        elif len(track_info['name']) < 22 & len(track_info['name']) > 10:
             dFont = displayFontMedium
 
         x, y = getTextPosition(draw, dFont, track_info_text)
