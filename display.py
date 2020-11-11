@@ -33,9 +33,10 @@ def getTextPosition(draw, font, text):
     return (WIDTH-w)/2, (HEIGHT-h)/2
 
 def getNextLinePosition(draw, font, text):
+    global current_line_start
     w, h = draw.textsize(text, font = font)
-    h += int((h*0.21)+line_spacing)
-    current_line_start = h + current_line_start
+    h += int((h*0.21)+line_spacing) + current_line_start
+    current_line_start = h
     return line_start, current_line_start
 
 def trackChanged(track_info):
