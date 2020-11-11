@@ -19,12 +19,12 @@ from spotify import callback, tl, SpotifyUser
 epd = epd4in2.EPD()
 WIDTH, HEIGHT = epd.width, epd.height
 TIME_X, TIME_Y = 30, 70
-line_spacing = 10
+line_spacing = 5
 current_line_start = 0
-line_start = 10
+line_start = 5
 displayFontSmall = ImageFont.truetype('fonts/NovaMono.ttf', 22) # 30 characters
 displayFontMedium = ImageFont.truetype('fonts/NovaMono.ttf', 26) # 20 characters
-displayFontBig = ImageFont.truetype('fonts/NovaMono.ttf', 32) # XX characters
+displayFontBig = ImageFont.truetype('fonts/NovaMono.ttf', 42) # XX characters
 
 def getTextPosition(draw, font, text):
     w, h = draw.textsize(text, font = font)
@@ -52,9 +52,13 @@ def trackChanged(track_info):
         line_3 = track_info['artist']
         dFont = displayFontBig
         if len(track_info['name']) > 22:
+            logging.info('font-small')
             dFont = displayFontSmall
         elif len(track_info['name']) > 10 & len(track_info['name']) <= 22:
+            logging.info('font-medium')
             dFont = displayFontMedium
+        else:
+            logging.info('font-big')
 
         # x, y = getTextPosition(draw, dFont, track_info_text)
         # draw.multiline_text((x, y), track_info_text, font = dFont)
