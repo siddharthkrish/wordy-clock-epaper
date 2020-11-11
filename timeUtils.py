@@ -16,22 +16,22 @@ def timeInWords(h, m):
         return(nums[h] + "\n o' clock");
 
     elif (m == 1):
-        return("one minute past \n" + nums[h]);
+        return("one minute past\n" + nums[h]);
 
     elif (m == 59):
-        return("one minute to \n" + nums[(h % 12) + 1]);
+        return("one minute to\n" + nums[(h % 12) + 1]);
 
     elif (m == 15):
-        return("quarter past \n" + nums[h]);
+        return("quarter past\n" + nums[h]);
 
     elif (m == 30):
-        return("half past \n" + nums[h]);
+        return("half past\n" + nums[h]);
 
     elif (m == 45):
-        return("quarter to \n" + (nums[(h % 12) + 1]));
+        return("quarter to\n" + (nums[(h % 12) + 1]));
 
     elif (m <= 30):
-        return(nums[m] + "\n minutes past \n" + nums[h]);
+        return(nums[m] + "\n minutes past\n" + nums[h]);
 
     elif (m > 30):
-        return(nums[60 - m] + "\n minutes to \n" +  nums[(h % 12) + 1]);
+        return(nums[60 - m] + "\n minutes to\n" +  nums[(h % 12) + 1]);
