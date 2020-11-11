@@ -19,9 +19,9 @@ from spotify import callback, tl, SpotifyUser
 epd = epd4in2.EPD()
 WIDTH, HEIGHT = epd.width, epd.height
 font_small = ImageFont.truetype('fonts/NovaMono.ttf', 22) # 30 characters
-font_medium = ImageFont.truetype('fonts/NovaMono.ttf', 26) # 20 characters
-font_big = ImageFont.truetype('fonts/NovaMono.ttf', 42) # XX characters
-font_now_playing = ImageFont.truetype('fonts/PTMono-Regular.ttf', 24)
+font_medium = ImageFont.truetype('fonts/NovaMono.ttf', 32) # 20 characters
+font_big = ImageFont.truetype('fonts/NovaMono.ttf', 64) # XX characters
+font_now_playing = ImageFont.truetype('fonts/PTMono-Regular.ttf', 32)
 class RenderText:
     current_line_start = 0
     line_spacing = 5
@@ -33,7 +33,7 @@ class RenderText:
     def drawText(self, draw, text, font):
         _w, y = draw.textsize(text, font = font)
         y += self.current_line_start
-        self.current_line_start = y
+        self.current_line_start = y + line_spacing
         draw.text((self.line_start, y), text, font=font)
 
 def getTextPosition(draw, font, text):
