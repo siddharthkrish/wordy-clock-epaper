@@ -26,6 +26,11 @@ def handler(signal_received, frame):
     print('SIGINT or CTRL-C detected. Exiting gracefully')
     exit(0)
 
+def getTextPosition(draw, text):
+    w, h = draw.textsize(text, font = displayFont)
+    h += int(h*0.21)
+    return (WIDTH-w/2), (HEIGHT-h)/2
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
 
@@ -46,7 +51,8 @@ if __name__ == '__main__':
             date_string = time_now.strftime('%Y-%m-%d')
 
             logging.info("time: " + time_string)
-            draw.multiline_text((TIME_X, TIME_Y), time_string, font = displayFont)
+            x, y = getTextPosition(draw, time_string)
+            draw.multiline_text((x, y), time_string, font = displayFont)
             image_buffer = epd.getbuffer(Himage)
             epd.display(image_buffer)
             epd.sleep()
