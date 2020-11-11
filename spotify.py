@@ -23,7 +23,7 @@ class SpotifyUser:
 
   def __init__(self):
     username = os.environ['SPOTIPY_USERNAME']
-    self.token = util.prompt_for_user_token(username, self.scope, show_dialog=True)
+    self.token = util.prompt_for_user_token(username, self.scope)
     self.spotify = spotipy.Spotify(auth=self.token)
 
   def currentTrack(self):
