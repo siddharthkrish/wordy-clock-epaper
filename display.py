@@ -46,7 +46,7 @@ def trackChanged(track_info):
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
-    spotify.callback['track_change'] = trackChanged
+    SpotifyUser.callback['track_change'] = trackChanged
 
     try:
         logging.info("init and Clear")
