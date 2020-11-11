@@ -29,7 +29,8 @@ def handler(signal_received, frame):
 def getTextPosition(draw, text):
     w, h = draw.textsize(text, font = displayFont)
     h += int(h*0.21)
-    return (WIDTH-w/2), (HEIGHT-h)/2
+    logging.info("w: %s, h: %s, x: %s, y: %s",w,h,(WIDTH-w)/2, (HEIGHT-h)/2)
+    return (WIDTH-w)/2, (HEIGHT-h)/2
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
