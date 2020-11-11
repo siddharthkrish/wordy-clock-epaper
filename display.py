@@ -20,6 +20,7 @@ epd = epd4in2.EPD()
 WIDTH, HEIGHT = epd.width, epd.height
 TIME_X, TIME_Y = 30, 70
 line_spacing = 10
+current_line_start = 0
 line_start = 10
 displayFontSmall = ImageFont.truetype('fonts/NovaMono.ttf', 22) # 30 characters
 displayFontMedium = ImageFont.truetype('fonts/NovaMono.ttf', 26) # 20 characters
@@ -34,7 +35,8 @@ def getTextPosition(draw, font, text):
 def getNextLinePosition(draw, font, text):
     w, h = draw.textsize(text, font = font)
     h += int((h*0.21)+line_spacing)
-    return line_start, h
+    current_line_start = h + current_line_start
+    return line_start, current_line_start
 
 def trackChanged(track_info):
     logging.info('track changed')
@@ -44,7 +46,6 @@ def trackChanged(track_info):
         Himage = Image.new('1', (WIDTH, HEIGHT), 128)
         draw = ImageDraw.Draw(Himage)
 
-        track_info_text = "now playing...\n{}\n{}".format(track_info['name'], track_info['artist'])
         line_1 = 'now playing...'
         line_2 = track_info['name']
         line_3 = track_info['artist']
@@ -56,10 +57,11 @@ def trackChanged(track_info):
 
         # x, y = getTextPosition(draw, dFont, track_info_text)
         # draw.multiline_text((x, y), track_info_text, font = dFont)
-        draw.text((10,10), line_1, font=displayFontSmall)
+        x, y = getNextLinePosition(draw, displayFontSmall, "")
+        draw.text((x,y), line_1, font=displayFontSmall)
         x, y = getNextLinePosition(draw, displayFontSmall, line_1)
         draw.text((x,y), line_2, font=dFont)
-        x, y = getNextLinePosition(draw, dFont, line_1)
+        x, y = getNextLinePosition(draw, dFont, line_2)
         draw.text((x,y), line_3, font=displayFontSmall)
         image_buffer = epd.getbuffer(Himage)
         epd.display(image_buffer)
