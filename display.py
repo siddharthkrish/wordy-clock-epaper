@@ -14,12 +14,12 @@ from PIL import Image,ImageDraw,ImageFont
 
 # Local dependencies
 from timeUtils import timeInWords
-import spotify
+from spotify import callback, tl, SpotifyUser
 
 epd = epd4in2.EPD()
 WIDTH, HEIGHT = epd.width, epd.height
 TIME_X, TIME_Y = 30, 70
-displayFont = ImageFont.truetype('fonts/NovaMono.ttf', 50)
+displayFont = ImageFont.truetype('fonts/NovaMono.ttf', 26)
 
 def getTextPosition(draw, text):
     w, h = draw.textsize(text, font = displayFont)
@@ -35,9 +35,9 @@ def trackChanged(track_info):
         Himage = Image.new('1', (WIDTH, HEIGHT), 128)
         draw = ImageDraw.Draw(Himage)
 
-        track_info_text = "now playing...\n{} by {}".format(track_info['name'], track_info['artist'])
+        track_info_text = "now playing...\n{} by\n{}".format(track_info['name'], track_info['artist'])
         x, y = getTextPosition(draw, track_info_text)
-        draw.multiline_text((x, y), time_string, font = displayFont)
+        draw.multiline_text((x, y), track_info_text, font = displayFont)
         image_buffer = epd.getbuffer(Himage)
         epd.display(image_buffer)
         epd.sleep()
@@ -46,7 +46,7 @@ def trackChanged(track_info):
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
-    callback['track_change'] = trackChanged
+    spotify.callback['track_change'] = trackChanged
 
     try:
         logging.info("init and Clear")

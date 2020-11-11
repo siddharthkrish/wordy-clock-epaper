@@ -17,13 +17,13 @@ callback = {
   'track_change': None
 }
 
-class Spotify:
+class SpotifyUser:
   scope = 'user-read-currently-playing'
   track_id = ''
 
   def __init__(self):
     username = os.environ['SPOTIPY_USERNAME']
-    self.token = util.prompt_for_user_token(username, self.scope)
+    self.token = util.prompt_for_user_token(username, self.scope, show_dialog=True)
     self.spotify = spotipy.Spotify(auth=self.token)
 
   def currentTrack(self):
@@ -51,7 +51,7 @@ class Spotify:
     return track_info
 
 tl = Timeloop()
-sp = Spotify()
+sp = SpotifyUser()
 
 # check for a song every 5 minutes
 @tl.job(interval=timedelta(seconds=5))
