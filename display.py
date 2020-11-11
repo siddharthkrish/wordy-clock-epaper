@@ -18,13 +18,23 @@ from spotify import callback, tl, SpotifyUser
 
 epd = epd4in2.EPD()
 WIDTH, HEIGHT = epd.width, epd.height
-TIME_X, TIME_Y = 30, 70
-line_spacing = 5
-current_line_start = 0
-line_start = 5
-displayFontSmall = ImageFont.truetype('fonts/NovaMono.ttf', 22) # 30 characters
-displayFontMedium = ImageFont.truetype('fonts/NovaMono.ttf', 26) # 20 characters
-displayFontBig = ImageFont.truetype('fonts/NovaMono.ttf', 42) # XX characters
+font_small = ImageFont.truetype('fonts/NovaMono.ttf', 22) # 30 characters
+font_medium = ImageFont.truetype('fonts/NovaMono.ttf', 26) # 20 characters
+font_big = ImageFont.truetype('fonts/NovaMono.ttf', 42) # XX characters
+habbo = ImageFont.truetype('fonts/Habbo.ttf', 24)
+class RenderText:
+    current_line_start = 0
+    line_spacing = 5
+    line_start = 5
+
+    def resetLineStart(self):
+        self.current_line_start = 0
+    
+    def drawText(self, draw, text, font):
+        _w, y = draw.textsize(text, font = font)
+        y += self.current_line_start
+        self.current_line_start = y
+        draw.text((self.line_start, y), text, font=font)
 
 def getTextPosition(draw, font, text):
     w, h = draw.textsize(text, font = font)
@@ -32,12 +42,17 @@ def getTextPosition(draw, font, text):
     logging.info("w: %s, h: %s, x: %s, y: %s",w,h,(WIDTH-w)/2, (HEIGHT-h)/2)
     return (WIDTH-w)/2, (HEIGHT-h)/2
 
-def getNextLinePosition(draw, font, text):
-    global current_line_start
-    w, h = draw.textsize(text, font = font)
-    h += int((h*0.21)+line_spacing) + current_line_start
-    current_line_start = h
-    return line_start, current_line_start
+def getFont(text):
+    if len(text) > 22:
+        logging.info('font-small')
+        return font_small
+    elif len(text) > 10 & len(text) <= 22:
+        logging.info('font-medium')
+        return font_medium
+    else:
+        return font_big
+
+renderer = RenderText()
 
 def trackChanged(track_info):
     logging.info('track changed')
@@ -50,24 +65,12 @@ def trackChanged(track_info):
         line_1 = 'now playing...'
         line_2 = track_info['name']
         line_3 = track_info['artist']
-        dFont = displayFontBig
-        if len(track_info['name']) > 22:
-            logging.info('font-small')
-            dFont = displayFontSmall
-        elif len(track_info['name']) > 10 & len(track_info['name']) <= 22:
-            logging.info('font-medium')
-            dFont = displayFontMedium
-        else:
-            logging.info('font-big')
+        
+        renderer.resetLineStart()
+        renderer.drawText(draw, line_1, habbo)
+        renderer.drawText(draw, line_2, getFont(line_2))
+        renderer.drawText(draw, line_3, font_small)
 
-        # x, y = getTextPosition(draw, dFont, track_info_text)
-        # draw.multiline_text((x, y), track_info_text, font = dFont)
-        x, y = getNextLinePosition(draw, displayFontSmall, "")
-        draw.text((x,y), line_1, font=displayFontSmall)
-        x, y = getNextLinePosition(draw, displayFontSmall, line_1)
-        draw.text((x,y), line_2, font=dFont)
-        x, y = getNextLinePosition(draw, dFont, line_2)
-        draw.text((x,y), line_3, font=displayFontSmall)
         image_buffer = epd.getbuffer(Himage)
         epd.display(image_buffer)
         epd.sleep()
