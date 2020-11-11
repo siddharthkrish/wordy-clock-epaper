@@ -41,7 +41,7 @@ def trackChanged(track_info):
         dFont = displayFontBig
         if len(track_info['name']) > 22:
             dFont = displayFontSmall
-        elif len(track_info['name']) < 22 & len(track_info['name']) > 10:
+        elif len(track_info['name']) > 10 & len(track_info['name']) <= 22:
             dFont = displayFontMedium
 
         x, y = getTextPosition(draw, dFont, track_info_text)
