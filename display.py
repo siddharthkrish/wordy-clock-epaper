@@ -21,7 +21,7 @@ WIDTH, HEIGHT = epd.width, epd.height
 font_small = ImageFont.truetype('fonts/NovaMono.ttf', 22) # 30 characters
 font_medium = ImageFont.truetype('fonts/NovaMono.ttf', 26) # 20 characters
 font_big = ImageFont.truetype('fonts/NovaMono.ttf', 42) # XX characters
-habbo = ImageFont.truetype('fonts/Habbo.ttf', 24)
+font_now_playing = ImageFont.truetype('fonts/PTMono-Regular.ttf', 24)
 class RenderText:
     current_line_start = 0
     line_spacing = 5
@@ -46,7 +46,7 @@ def getFont(text):
     if len(text) > 22:
         logging.info('font-small')
         return font_small
-    elif len(text) > 10 & len(text) <= 22:
+    elif len(text) > 10 and len(text) <= 22:
         logging.info('font-medium')
         return font_medium
     else:
@@ -67,7 +67,7 @@ def trackChanged(track_info):
         line_3 = track_info['artist']
         
         renderer.resetLineStart()
-        renderer.drawText(draw, line_1, habbo)
+        renderer.drawText(draw, line_1, font_now_playing)
         renderer.drawText(draw, line_2, getFont(line_2))
         renderer.drawText(draw, line_3, font_small)
 
