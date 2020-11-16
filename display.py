@@ -18,23 +18,21 @@ from spotify import callback, tl, SpotifyUser
 
 epd = epd4in2.EPD()
 WIDTH, HEIGHT = epd.width, epd.height
-font_small = ImageFont.truetype('fonts/NovaMono.ttf', 22) # 30 characters
-font_medium = ImageFont.truetype('fonts/NovaMono.ttf', 32) # 20 characters
-font_big = ImageFont.truetype('fonts/NovaMono.ttf', 64) # XX characters
-font_now_playing = ImageFont.truetype('fonts/PTMono-Regular.ttf', 32)
+track_font = ImageFont.truetype('fonts/NovaMono.ttf', 24)
+artist_playing = ImageFont.truetype('fonts/PTMono-Regular.ttf', 20)
 class RenderText:
-    current_line_start = 0
+    current_line_start = 55
     line_spacing = 5
     line_start = 5
 
     def resetLineStart(self):
-        self.current_line_start = 0
+        self.current_line_start = 55
     
     def drawText(self, draw, text, font):
+        draw.text((self.line_start, self.current_line_start), text, font=font)
         _w, y = draw.textsize(text, font = font)
-        y += self.current_line_start
-        self.current_line_start = y + line_spacing
-        draw.text((self.line_start, y), text, font=font)
+        # update next line start to current text height + line spacing
+        self.current_line_start += (y + self.line_spacing)
 
 def getTextPosition(draw, font, text):
     w, h = draw.textsize(text, font = font)
@@ -43,14 +41,7 @@ def getTextPosition(draw, font, text):
     return (WIDTH-w)/2, (HEIGHT-h)/2
 
 def getFont(text):
-    if len(text) > 22:
-        logging.info('font-small')
-        return font_small
-    elif len(text) > 10 and len(text) <= 22:
-        logging.info('font-medium')
-        return font_medium
-    else:
-        return font_big
+    return track_font
 
 renderer = RenderText()
 
@@ -62,14 +53,9 @@ def trackChanged(track_info):
         Himage = Image.new('1', (WIDTH, HEIGHT), 128)
         draw = ImageDraw.Draw(Himage)
 
-        line_1 = 'now playing...'
-        line_2 = track_info['name']
-        line_3 = track_info['artist']
-        
         renderer.resetLineStart()
-        renderer.drawText(draw, line_1, font_now_playing)
-        renderer.drawText(draw, line_2, getFont(line_2))
-        renderer.drawText(draw, line_3, font_small)
+        renderer.drawText(draw, track_info['name'], getFont(name['artist']))
+        renderer.drawText(draw, track_info['artist'], font_small)
 
         image_buffer = epd.getbuffer(Himage)
         epd.display(image_buffer)
@@ -78,7 +64,7 @@ def trackChanged(track_info):
         logging.info(e)
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     callback['track_change'] = trackChanged
 
     try:

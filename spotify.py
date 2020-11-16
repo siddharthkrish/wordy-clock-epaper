@@ -1,8 +1,13 @@
 #!/usr/bin/python3
 # -*- coding:utf-8 -*-
 
+# task list
+# [] access token expired
+# [] timeloop wait till song pending time
+# [] paused song
 import os
 import time
+import logging
 import spotipy
 import spotipy.util as util
 
@@ -47,7 +52,7 @@ class SpotifyUser:
           track_info['album'] = track['album']['name']
           track_info['id'] = track['id']
     else:
-      print("Can't get token for", username)
+      logging.warn("Can't get token for", username)
     return track_info
 
 tl = Timeloop()
@@ -59,18 +64,19 @@ def spotifyListner():
   track_info = sp.currentTrack()
   if sp.track_id != track_info['id']:
     sp.track_id = track_info['id']
-    print("track changed")
+    logging.debug("track changed")
     if callback['track_change']:
       callback['track_change'](track_info)
 
 def displayTrackInfo(track_info):
   if track_info['playing']:
-    print("now playing...\n{} by {}".format(track_info['name'], track_info['artist']))
+    logging.debug("now playing...\n{} by {}".format(track_info['name'], track_info['artist']))
   else:
-    print("it's very quiet here...")
+    logging.debug("it's very quiet here...")
 
 # sample use
 if __name__ == '__main__':
+  logging.basicConfig(level=logging.DEBUG)
   callback['track_change'] = displayTrackInfo
   # start listening to some music events
   tl.start(block=True)

@@ -3,3 +3,4 @@ nohup.out
 *.swp
 .env
 .cache-*
+.DS_Store
