@@ -1,3 +1,3 @@
 #!/bin/bash
 
-nohup python3 clock.py &
+nohup python3 display.py &
