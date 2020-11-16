@@ -4,3 +4,4 @@ nohup.out
 .env
 .cache-*
 .DS_Store
+*.png

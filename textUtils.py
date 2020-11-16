@@ -24,6 +24,13 @@ def fitTextToLine(text, lineWidth):
     line.append(text)
   return line
 
+def replaceText(text, replaceChar, start, end):
+  temp = list(text)
+  for i in range(start, end):
+    logging.info("i: %d, temp_len: %d", i, len(temp))
+    temp[i] = replaceChar
+  return "".join(temp)
+
 if __name__ == "__main__":
   logging.basicConfig(level=logging.INFO)
   line = fitTextToLine("12345 78901 3456 789012 456789 0123456", 17)

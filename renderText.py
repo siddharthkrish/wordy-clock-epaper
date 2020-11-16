@@ -16,7 +16,7 @@ from textUtils import fitTextToLine, replaceText
 
 WIDTH, HEIGHT = 400, 300
 track_font = ImageFont.truetype('fonts/NovaMono.ttf', 42)
-artist_playing = ImageFont.truetype('fonts/PTMono-Regular.ttf', 25)
+artist_playing = ImageFont.truetype('fonts/PTMono-Regular.ttf', 26)
 class RenderText:
     current_line_start = 50
     line_spacing = 5
