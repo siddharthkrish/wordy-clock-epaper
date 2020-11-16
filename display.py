@@ -20,7 +20,7 @@ def trackChanged(track_info):
         epd.init()
         image = renderer.render(track_info)
 
-        epd.display(image)
+        epd.display(epd.getbuffer(image))
         epd.sleep()
     except IOError as e:
         logging.info(e)
